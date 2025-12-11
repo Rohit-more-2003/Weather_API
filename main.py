@@ -28,6 +28,29 @@ def about(station, date):
 	        "temperature": temperature}
 
 
+@app.route("/api/v1/<station>")
+def all_data(station):
+	filename = "data_small/TG_STAID" + str(station).zfill(6) + ".txt"
+	df = pd.read_csv(filename, skiprows=20, parse_dates=["    DATE"]) #parse_dates changes the date from string to date, time
+	
+	result = df.to_dict(orient="records")
+	return result
+
+
+@app.route("/api/v1/annual/<station>/<year>")
+def yearly(station, year):
+	filename = "data_small/TG_STAID" + str(station).zfill(6) + ".txt"
+	df = pd.read_csv(filename, skiprows=20)
+	
+	#parse_dates makes the date&time accessible as date&time format instead of string format
+	#But here we are using year as condition, so remove parse_dates parameter to access date
+	#as a string
+	df["    DATE"] = df["    DATE"].astype(str)
+	
+	result = df[df["    DATE"].str.startswith(str(year))].to_dict(orient="records")
+	return result
+
+
 if __name__ == "__main__":  #__name__ == __main__ only if the current file is being run
 	app.run(debug=True) #port=5*** argument added if multiple flask apps are to run
 	#default port value is 5000.
