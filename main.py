@@ -3,10 +3,13 @@ import pandas as pd
 
 app = Flask("Website")
 
+stations = pd.read_csv("data_small/stations.txt", skiprows=17)
+stations = stations[["STAID", "STANAME                                 "]]
+
 #df = pd.read_csv()
 @app.route("/")  #@-decorator prefix, route connects with corresponding files
 def home():
-	return render_template("home.html")
+	return render_template("home.html", data=stations.to_html())
 
 
 @app.route("/api/v1/<station>/<date>")
