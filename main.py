@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 import pandas as pd
-import numpy as np
 
 app = Flask("Website")
 
@@ -29,3 +28,5 @@ def about(station, date):
 if __name__ == "__main__":  #__name__ == __main__ only if the current file is being run
 	app.run(debug=True) #port=5*** argument added if multiple flask apps are to run
 	#default port value is 5000.
+	
+#This program is written so we understand about data analysis and visualization
